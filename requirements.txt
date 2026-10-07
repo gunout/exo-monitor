@@ -1,0 +1,5 @@
+shazamio
+requests
+pydub
+aiohttp
+aiofiles

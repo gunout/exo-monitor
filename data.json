@@ -1,0 +1,337 @@
+{
+  "genere_ts": 1791373082,
+  "dernier_morceau": {
+    "titre": "Comment m'aimer",
+    "artistes": "Kalipsxau",
+    "cover_deezer": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3b/03/94/3b03947f-8fe5-80b2-e56e-52518ac013ae/artwork.jpg/500x500bb.jpg",
+    "preview_mp3": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/3a/ae/f8/3aaef8a4-50d6-78f4-ac33-db873e086d6d/mzaf_5639701664894010585.plus.aac.p.m4a",
+    "album": "THERAPY - EP",
+    "annee": 2026,
+    "genre": "Pop",
+    "start_ts": 1791373082,
+    "end_ts": 1791373248,
+    "heure": 15,
+    "date": "2026-10-07",
+    "jour_semaine": 2
+  },
+  "derniers_morceaux": [
+    {
+      "titre": "Comment m'aimer",
+      "artistes": "Kalipsxau",
+      "cover_deezer": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3b/03/94/3b03947f-8fe5-80b2-e56e-52518ac013ae/artwork.jpg/500x500bb.jpg",
+      "preview_mp3": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/3a/ae/f8/3aaef8a4-50d6-78f4-ac33-db873e086d6d/mzaf_5639701664894010585.plus.aac.p.m4a",
+      "album": "THERAPY - EP",
+      "annee": 2026,
+      "genre": "Pop",
+      "start_ts": 1791373082,
+      "end_ts": 1791373248,
+      "heure": 15,
+      "date": "2026-10-07",
+      "jour_semaine": 2
+    },
+    {
+      "titre": "18h33",
+      "artistes": "Kalash",
+      "cover_deezer": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/f1/3e/cf/f13ecf18-0a7b-c2bd-95e5-4072fdd30633/cover.jpg/500x500bb.jpg",
+      "preview_mp3": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/f9/17/57/f91757a2-3db6-97e4-2c3d-b0a346b5fa54/mzaf_11183855577283377877.plus.aac.p.m4a",
+      "album": "EX-VOTO",
+      "annee": 2026,
+      "genre": "Modern Dancehall",
+      "start_ts": 1791372941,
+      "end_ts": 1791373098,
+      "heure": 15,
+      "date": "2026-10-07",
+      "jour_semaine": 2
+    },
+    {
+      "titre": "La bohème (Remix)",
+      "artistes": "Boubou & Joker IBRAH",
+      "cover_deezer": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/75/ea/9b/75ea9bd8-2f1f-01b8-bb7f-e0d738b3fd5f/859725882466_cover.jpg/400x400cc.jpg",
+      "preview_mp3": "",
+      "album": "",
+      "annee": null,
+      "genre": "",
+      "start_ts": 1791372805,
+      "end_ts": 1791372805,
+      "heure": 15,
+      "date": "2026-10-07",
+      "jour_semaine": 2
+    },
+    {
+      "titre": "Ou Pé",
+      "artistes": "Goldn.B & Keros-N",
+      "cover_deezer": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/58/a8/2a/58a82a6c-dea2-ab22-f30b-0d800accd861/859736854698_cover.jpg/500x500bb.jpg",
+      "preview_mp3": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e7/4a/cf/e74acf14-785c-ab14-f647-dcf0c9005108/mzaf_3905083639015272570.plus.aac.p.m4a",
+      "album": "Maille Café",
+      "annee": 2026,
+      "genre": "Reggae",
+      "start_ts": 1791372468,
+      "end_ts": 1791372649,
+      "heure": 15,
+      "date": "2026-10-07",
+      "jour_semaine": 2
+    },
+    {
+      "titre": "La vie chère",
+      "artistes": "Secteur 410 & Sanjiva",
+      "cover_deezer": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9a/bf/4c/9abf4c6e-2b26-dc86-2722-6bb776381528/artwork.jpg/500x500bb.jpg",
+      "preview_mp3": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ee/02/af/ee02afbc-7029-0cfd-b446-ea7c5dc81401/mzaf_5271973122258756195.plus.aac.p.m4a",
+      "album": "La vie chère - Single",
+      "annee": 2026,
+      "genre": "Reggae",
+      "start_ts": 1791372265,
+      "end_ts": 1791372532,
+      "heure": 15,
+      "date": "2026-10-07",
+      "jour_semaine": 2
+    }
+  ],
+  "volume": {
+    "nb_diffusions": 5,
+    "nb_artistes": 5,
+    "nb_titres": 5,
+    "heures": 0.29,
+    "duree_moy": 210
+  },
+  "top_artistes": [
+    {
+      "artistes": "Secteur 410 & Sanjiva",
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Goldn.B & Keros-N",
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Boubou & Joker IBRAH",
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Kalash",
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Kalipsxau",
+      "nb_diffusions": 1
+    }
+  ],
+  "top_titres": [
+    {
+      "artistes": "Secteur 410 & Sanjiva",
+      "titre": "La vie chère",
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Goldn.B & Keros-N",
+      "titre": "Ou Pé",
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Boubou & Joker IBRAH",
+      "titre": "La bohème (Remix)",
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Kalash",
+      "titre": "18h33",
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Kalipsxau",
+      "titre": "Comment m'aimer",
+      "nb_diffusions": 1
+    }
+  ],
+  "heures": [
+    {
+      "heure": 0,
+      "nb": 0
+    },
+    {
+      "heure": 1,
+      "nb": 0
+    },
+    {
+      "heure": 2,
+      "nb": 0
+    },
+    {
+      "heure": 3,
+      "nb": 0
+    },
+    {
+      "heure": 4,
+      "nb": 0
+    },
+    {
+      "heure": 5,
+      "nb": 0
+    },
+    {
+      "heure": 6,
+      "nb": 0
+    },
+    {
+      "heure": 7,
+      "nb": 0
+    },
+    {
+      "heure": 8,
+      "nb": 0
+    },
+    {
+      "heure": 9,
+      "nb": 0
+    },
+    {
+      "heure": 10,
+      "nb": 0
+    },
+    {
+      "heure": 11,
+      "nb": 0
+    },
+    {
+      "heure": 12,
+      "nb": 0
+    },
+    {
+      "heure": 13,
+      "nb": 0
+    },
+    {
+      "heure": 14,
+      "nb": 0
+    },
+    {
+      "heure": 15,
+      "nb": 5
+    },
+    {
+      "heure": 16,
+      "nb": 0
+    },
+    {
+      "heure": 17,
+      "nb": 0
+    },
+    {
+      "heure": 18,
+      "nb": 0
+    },
+    {
+      "heure": 19,
+      "nb": 0
+    },
+    {
+      "heure": 20,
+      "nb": 0
+    },
+    {
+      "heure": 21,
+      "nb": 0
+    },
+    {
+      "heure": 22,
+      "nb": 0
+    },
+    {
+      "heure": 23,
+      "nb": 0
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-10-07",
+      "nb": 5
+    }
+  ],
+  "semaine": [
+    {
+      "jour": "Lundi",
+      "nb_diffusions": 0
+    },
+    {
+      "jour": "Mardi",
+      "nb_diffusions": 0
+    },
+    {
+      "jour": "Mercredi",
+      "nb_diffusions": 5
+    },
+    {
+      "jour": "Jeudi",
+      "nb_diffusions": 0
+    },
+    {
+      "jour": "Vendredi",
+      "nb_diffusions": 0
+    },
+    {
+      "jour": "Samedi",
+      "nb_diffusions": 0
+    },
+    {
+      "jour": "Dimanche",
+      "nb_diffusions": 0
+    }
+  ],
+  "annees": [
+    {
+      "annee": 2026,
+      "nb_diffusions": 4
+    }
+  ],
+  "explicit": [],
+  "recurrents": [],
+  "titres_recurrents": [],
+  "diversifies": [
+    {
+      "artistes": "Secteur 410 & Sanjiva",
+      "nb_titres": 1,
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Goldn.B & Keros-N",
+      "nb_titres": 1,
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Boubou & Joker IBRAH",
+      "nb_titres": 1,
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Kalash",
+      "nb_titres": 1,
+      "nb_diffusions": 1
+    },
+    {
+      "artistes": "Kalipsxau",
+      "nb_titres": 1,
+      "nb_diffusions": 1
+    }
+  ],
+  "albums": [
+    {
+      "album": "La vie chère - Single",
+      "artistes": "",
+      "nb": 1
+    },
+    {
+      "album": "Maille Café",
+      "artistes": "",
+      "nb": 1
+    },
+    {
+      "album": "EX-VOTO",
+      "artistes": "",
+      "nb": 1
+    },
+    {
+      "album": "THERAPY - EP",
+      "artistes": "",
+      "nb": 1
+    }
+  ]
+}

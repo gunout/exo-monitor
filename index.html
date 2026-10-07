@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exo FM — Monitor</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+<style>
+  :root {
+    --exo-orange: #ff7a00;
+    --exo-orange-2: #ff9d3d;
+    --exo-orange-dark: #e56a00;
+    --exo-jaune: #ffc107;
+    --exo-noir: #1a1a1a;
+    --exo-gris: #faf7f2;
+    --exo-border: #f0e6d8;
+    --exo-muted: #8a7560;
+    --exo-blanc: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #fff; color: var(--exo-noir);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh; font-size: 14px;
+  }
+  .topbar {
+    background: var(--exo-noir); color: #fff;
+    padding: 8px 24px; display: flex; align-items: center;
+    justify-content: space-between; font-size: 11px;
+    font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar .live { display: inline-flex; align-items: center; gap: 8px; }
+  .topbar .live::before {
+    content: ''; width: 8px; height: 8px;
+    background: var(--exo-orange); border-radius: 50%;
+    animation: blink 1.5s infinite;
+    box-shadow: 0 0 10px var(--exo-orange);
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .topbar .meta { color: #999; font-size: 10px; }
+  .refresh-btn {
+    background: transparent; border: 1px solid #444; color: #fff;
+    padding: 4px 12px; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .refresh-btn:hover { background: var(--exo-orange); border-color: var(--exo-orange); }
+  .header {
+    background: linear-gradient(135deg, #ff7a00 0%, #ff9d3d 50%, #ffc107 100%);
+    color: #fff; padding: 28px 24px;
+    display: flex; align-items: center; gap: 20px;
+    position: relative; overflow: hidden;
+  }
+  .header::after {
+    content: ''; position: absolute; right: -50px; top: -50px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+  }
+  .logo {
+    font-size: 42px; font-weight: 900; letter-spacing: -2px;
+    color: #fff; font-family: 'Arial Black', Arial, sans-serif;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+    position: relative; z-index: 1;
+  }
+  .logo span { color: #fff8e1; }
+  .logo-sub {
+    color: rgba(255,255,255,0.95); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 4px;
+    border-left: 1px solid rgba(255,255,255,0.4);
+    padding-left: 20px; font-weight: 700;
+    position: relative; z-index: 1;
+  }
+  #etat {
+    background: var(--exo-gris); border-left: 4px solid var(--exo-orange);
+    padding: 10px 16px; font-size: 12px; margin: 16px 24px 0;
+    color: var(--exo-muted); text-transform: uppercase;
+    letter-spacing: 1px; font-weight: 600;
+  }
+  #etat.erreur { background: #ffe5d0; color: var(--exo-orange-dark); }
+  .on-air {
+    margin: 16px 24px 24px;
+    background: linear-gradient(135deg, #fff 0%, #fff8ef 100%);
+    border: 1px solid var(--exo-border);
+    border-left: 6px solid var(--exo-orange);
+    padding: 20px; display: flex; align-items: center; gap: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s;
+  }
+  .on-air.stale { border-left-color: var(--exo-muted); opacity: 0.7; }
+  .on-air .cover {
+    width: 110px; height: 110px; background: var(--exo-gris);
+    background-size: cover; background-position: center;
+    flex-shrink: 0; border: 1px solid var(--exo-border);
+    box-shadow: var(--shadow-md);
+  }
+  .on-air .info { flex: 1; min-width: 0; }
+  .on-air .label {
+    color: var(--exo-orange); font-size: 10px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 3px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .on-air .label::before {
+    content: ''; width: 8px; height: 8px;
+    background: var(--exo-orange); border-radius: 50%;
+    animation: blink 1.5s infinite;
+    box-shadow: 0 0 8px var(--exo-orange);
+  }
+  .on-air.stale .label { color: var(--exo-muted); }
+  .on-air.stale .label::before { background: var(--exo-muted); animation: none; box-shadow: none; }
+  .on-air .titre {
+    font-size: 26px; font-weight: 900; color: var(--exo-noir);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    text-transform: uppercase; letter-spacing: -0.5px;
+  }
+  .on-air .artiste {
+    color: var(--exo-orange); font-size: 15px;
+    margin-top: 4px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .on-air .actions {
+    display: flex; gap: 10px; margin-top: 12px; align-items: center; flex-wrap: wrap;
+  }
+  .on-air .extrait {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--exo-orange); color: #fff; font-size: 11px;
+    padding: 8px 14px; text-decoration: none;
+    text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;
+    transition: all 0.2s;
+  }
+  .on-air .extrait:hover { background: var(--exo-orange-dark); transform: translateY(-1px); }
+  .on-air .player-flux {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--exo-noir); color: #fff; font-size: 11px;
+    padding: 8px 14px; cursor: pointer; border: none;
+    text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;
+    transition: all 0.2s;
+  }
+  .on-air .player-flux:hover { background: #333; }
+  .on-air .player-flux.actif { background: var(--exo-orange); }
+  .on-air .countdown { text-align: right; font-variant-numeric: tabular-nums; }
+  .on-air .countdown-label {
+    color: var(--exo-muted); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+  }
+  .on-air .countdown-value {
+    font-size: 38px; font-weight: 900; color: var(--exo-orange);
+    margin-top: 4px;
+  }
+  .on-air.stale .countdown-value { color: var(--exo-muted); }
+  .kpis {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px; background: var(--exo-border);
+    border: 1px solid var(--exo-border); margin: 0 24px 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .kpi { background: #fff; padding: 20px; position: relative; }
+  .kpi:hover { background: var(--exo-gris); }
+  .kpi::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--exo-orange), var(--exo-jaune));
+  }
+  .kpi-label {
+    color: var(--exo-muted); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+  }
+  .kpi-value {
+    font-size: 38px; font-weight: 900; color: var(--exo-noir);
+    margin-top: 6px; letter-spacing: -1.5px;
+  }
+  .conteneur { max-width: 1600px; margin: 0 auto; padding: 0 24px 60px; }
+  .section-titre {
+    font-size: 14px; font-weight: 900; text-transform: uppercase;
+    letter-spacing: 3px; color: var(--exo-noir);
+    margin: 32px 0 12px; padding-bottom: 8px;
+    border-bottom: 3px solid var(--exo-orange);
+    display: inline-block;
+  }
+  .grille {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 16px; margin-bottom: 16px;
+  }
+  .grille-3 {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px; margin-bottom: 16px;
+  }
+  .carte {
+    background: #fff; border: 1px solid var(--exo-border);
+    box-shadow: var(--shadow-sm); transition: all 0.3s;
+  }
+  .carte:hover { border-color: var(--exo-orange); box-shadow: var(--shadow-md); }
+  .carte-titre {
+    padding: 12px 16px; font-size: 11px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: #fff;
+    background: linear-gradient(90deg, var(--exo-noir), var(--exo-orange));
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .carte-titre .badge {
+    background: var(--exo-jaune); color: var(--exo-noir);
+    padding: 2px 8px; font-size: 9px; font-weight: 900;
+    letter-spacing: 1px;
+  }
+  .carte-corps { padding: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--exo-border); }
+  th {
+    color: #fff; font-weight: 800; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    background: var(--exo-noir);
+  }
+  tr:hover { background: var(--exo-gris); }
+  .rang {
+    display: inline-block; width: 24px; text-align: center;
+    font-weight: 900; margin-right: 8px;
+  }
+  .rang.top3 { background: var(--exo-orange); color: #fff; padding: 2px 0; }
+  .pochette-cell {
+    width: 40px; height: 40px;
+    background: var(--exo-gris); background-size: cover;
+    background-position: center; border: 1px solid var(--exo-border);
+    display: inline-block; vertical-align: middle; margin-right: 10px;
+  }
+  .explicit-badge {
+    display: inline-block; background: var(--exo-orange); color: #fff;
+    font-size: 9px; font-weight: 900; padding: 2px 6px;
+    letter-spacing: 1px; margin-left: 8px;
+  }
+  .vide {
+    color: var(--exo-muted); font-style: italic; padding: 24px;
+    text-align: center; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .emission {
+    padding: 12px; border-bottom: 1px solid var(--exo-border);
+    display: flex; gap: 12px; align-items: center;
+  }
+  .emission:last-child { border-bottom: none; }
+  .emission .horaire {
+    font-weight: 900; color: var(--exo-orange);
+    font-size: 13px; min-width: 90px; font-variant-numeric: tabular-nums;
+  }
+  .emission .nom { flex: 1; }
+  .emission .nom strong { display: block; font-size: 13px; }
+  .emission .nom span { color: var(--exo-muted); font-size: 11px; }
+  footer {
+    margin-top: 60px; padding: 32px 24px;
+    background: var(--exo-noir); color: #999;
+    text-align: center; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 3px; font-weight: 700;
+  }
+  footer strong { color: var(--exo-orange); }
+  @media (max-width: 700px) {
+    .logo { font-size: 28px; }
+    .logo-sub { display: none; }
+    .kpi-value { font-size: 28px; }
+    .on-air { flex-direction: column; text-align: center; }
+    .on-air .countdown { text-align: center; }
+    .grille { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="live">En direct</div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="meta" id="horodatage">—</div>
+    <button class="refresh-btn" onclick="charger()">↻ Recharger</button>
+  </div>
+</div>
+
+<div class="header">
+  <div class="logo">EXO <span>FM</span></div>
+  <div class="logo-sub">Monitor Programmation · La Réunion</div>
+</div>
+
+<div id="etat">Initialisation...</div>
+
+<div class="on-air" id="on-air" style="display:none;">
+  <div class="cover" id="on-air-cover"></div>
+  <div class="info">
+    <div class="label" id="on-air-label">Morceau en cours</div>
+    <div class="titre" id="on-air-titre">—</div>
+    <div class="artiste" id="on-air-artiste">—</div>
+    <div class="actions">
+      <a class="extrait" id="on-air-extrait" href="#" target="_blank" style="display:none;">▶ Extraire 30s</a>
+      <button class="player-flux" id="btn-flux" onclick="toggleFlux()">🎧 Écouter Exo FM</button>
+    </div>
+  </div>
+  <div class="countdown">
+    <div class="countdown-label" id="countdown-label">Depuis diffusion</div>
+    <div class="countdown-value" id="countdown">--:--</div>
+  </div>
+</div>
+
+<audio id="audio-flux" preload="none">
+  <source src="https://exofmreunion.ice.infomaniak.ch/exofmreunion-128.aac" type="audio/aac">
+</audio>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="conteneur">
+  <h2 class="section-titre">Classement</h2>
+  <div class="grille">
+    <div class="carte"><div class="carte-titre">Top artistes <span class="badge">TOP 15</span></div><div class="carte-corps"><div id="chart-artistes"></div></div></div>
+    <div class="carte"><div class="carte-titre">Top titres <span class="badge">TOP 15</span></div><div class="carte-corps"><div id="chart-titres"></div></div></div>
+  </div>
+
+  <h2 class="section-titre">Répartition</h2>
+  <div class="grille">
+    <div class="carte"><div class="carte-titre">Par heure</div><div class="carte-corps"><div id="chart-heures"></div></div></div>
+    <div class="carte"><div class="carte-titre">Par jour de la semaine</div><div class="carte-corps"><div id="chart-semaine"></div></div></div>
+  </div>
+
+  <div class="carte" style="margin-bottom:16px;">
+    <div class="carte-titre">Évolution journalière</div>
+    <div class="carte-corps"><div id="chart-jours"></div></div>
+  </div>
+
+  <h2 class="section-titre">Analyses</h2>
+  <div class="grille-3">
+    <div class="carte"><div class="carte-titre">Par année</div><div class="carte-corps"><div id="chart-annees"></div></div></div>
+    <div class="carte"><div class="carte-titre">Explicit vs Clean</div><div class="carte-corps"><div id="chart-explicit"></div></div></div>
+    <div class="carte"><div class="carte-titre">Top albums</div><div class="carte-corps"><div id="table-albums"></div></div></div>
+  </div>
+
+  <h2 class="section-titre">Détails</h2>
+  <div class="grille">
+    <div class="carte"><div class="carte-titre">Artistes récurrents</div><div class="carte-corps"><div id="table-recurrents"></div></div></div>
+    <div class="carte"><div class="carte-titre">Titres récurrents</div><div class="carte-corps"><div id="table-titres-rec"></div></div></div>
+  </div>
+
+  <div class="grille">
+    <div class="carte"><div class="carte-titre">Artistes diversifiés</div><div class="carte-corps"><div id="table-diversif"></div></div></div>
+    <div class="carte"><div class="carte-titre">Émissions</div><div class="carte-corps"><div id="table-emissions"></div></div></div>
+  </div>
+
+  <h2 class="section-titre">Derniers morceaux</h2>
+  <div class="carte" style="margin-bottom:24px;">
+    <div class="carte-titre">Fil des diffusions</div>
+    <div class="carte-corps"><div id="table-derniers"></div></div>
+  </div>
+</div>
+
+<footer>
+  <strong>EXO FM MONITOR</strong> · Identification Shazam · Enrichissement iTunes · v1.1
+</footer>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const SEUIL_VIEUX = 600;
+const AUTO_REFRESH = 60000;
+const ORANGE = '#ff7a00';
+const NOIR = '#1a1a1a';
+
+const EMISSIONS_SEMAINE = [
+  { horaire: '05h-09h', nom: 'Zot Morning', animateur: 'Akim & Anaïs' },
+  { horaire: '09h-13h', nom: 'Planet Exo', animateur: 'Ricardo' },
+  { horaire: '15h-19h', nom: 'Le Club Exo', animateur: 'Quentin' },
+];
+const EMISSIONS_WEEKEND = [
+  { horaire: '06h-12h', nom: 'Zot Morning Week-end', animateur: 'Quentin' },
+  { horaire: '12h-15h', nom: 'Le Sun Hit', animateur: 'DJ Daddy Mad & DJ Niaka' },
+  { horaire: '15h-19h', nom: 'Beach Party', animateur: 'Samix' },
+  { horaire: '19h-23h', nom: 'La Boom Bébé', animateur: 'DJ Luka & DJ Micka' },
+];
+
+// ============================================================
+// ÉTAT
+// ============================================================
+let DERNIER_TS = 0;
+let DERNIER_DUREE = 0;
+let INTERVALLE_AUTO = null;
+let FLUX_ACTIF = false;
+
+// ============================================================
+// CHARGEMENT
+// ============================================================
+async function charger() {
+  const etat = document.getElementById('etat');
+  try {
+    const rep = await fetch('data.json?t=' + Date.now());
+    if (!rep.ok) throw new Error('HTTP ' + rep.status);
+    const data = await rep.json();
+    etat.className = '';
+    etat.textContent = 'Données synchronisées';
+    document.getElementById('horodatage').textContent =
+      'Mise à jour : ' + new Date(data.genere_ts * 1000).toLocaleTimeString('fr-FR');
+    construire(data);
+    chargerOnAir(data.dernier_morceau);
+  } catch (e) {
+    etat.className = 'erreur';
+    etat.textContent = 'Erreur : ' + e.message;
+  }
+}
+
+// ============================================================
+// CONSTRUCTION
+// ============================================================
+function construire(d) {
+  const vide = '<div class="vide">Pas encore de données</div>';
+
+  const vol = d.volume || {};
+  const kpis = [
+    ['Diffusions', vol.nb_diffusions || 0],
+    ['Artistes', vol.nb_artistes || 0],
+    ['Titres', vol.nb_titres || 0],
+    ['Heures', Number(vol.heures || 0).toFixed(2)],
+    ['Durée moy.', Number(vol.duree_moy || 0).toFixed(0) + 's']
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(function(k) {
+    return '<div class="kpi"><div class="kpi-label">' + k[0] + '</div><div class="kpi-value">' + k[1] + '</div></div>';
+  }).join('');
+
+  const layoutBase = {
+    paper_bgcolor: '#fff', plot_bgcolor: '#fff',
+    font: { color: '#111', size: 11, family: 'Helvetica Neue, Arial' },
+    margin: { l: 40, r: 20, t: 10, b: 40 },
+    xaxis: { gridcolor: '#eee' }, yaxis: { gridcolor: '#eee' }
+  };
+  const layoutBar = Object.assign({}, layoutBase, {
+    margin: { l: 180, r: 20, t: 10, b: 40 },
+    yaxis: { autorange: 'reversed', gridcolor: '#eee' }
+  });
+  const layoutDonut = {
+    paper_bgcolor: '#fff', plot_bgcolor: '#fff',
+    font: { color: '#111', size: 11, family: 'Helvetica Neue, Arial' },
+    margin: { l: 20, r: 20, t: 10, b: 20 },
+    showlegend: true,
+    legend: { orientation: 'v', x: 1, y: 0.5 }
+  };
+  const opts = { displayModeBar: false, responsive: true };
+
+  if (d.top_artistes && d.top_artistes.length) {
+    const a = d.top_artistes.slice(0, 15).reverse();
+    Plotly.newPlot('chart-artistes', [{
+      type: 'bar', orientation: 'h',
+      x: a.map(function(r) { return r.nb_diffusions; }),
+      y: a.map(function(r) { return r.artistes; }),
+      marker: { color: ORANGE },
+      text: a.map(function(r) { return r.nb_diffusions; }),
+      textposition: 'outside',
+      hovertemplate: '%{y}<br>%{x} diffusions<extra></extra>'
+    }], layoutBar, opts);
+  } else document.getElementById('chart-artistes').innerHTML = vide;
+
+  if (d.top_titres && d.top_titres.length) {
+    const t = d.top_titres.slice(0, 15).reverse();
+    Plotly.newPlot('chart-titres', [{
+      type: 'bar', orientation: 'h',
+      x: t.map(function(r) { return r.nb_diffusions; }),
+      y: t.map(function(r) { return (r.artistes || '') + ' — ' + (r.titre || ''); }),
+      marker: { color: NOIR },
+      text: t.map(function(r) { return r.nb_diffusions; }),
+      textposition: 'outside',
+      hovertemplate: '%{y}<br>%{x} diffusions<extra></extra>'
+    }], layoutBar, opts);
+  } else document.getElementById('chart-titres').innerHTML = vide;
+
+  if (d.heures && d.heures.length) {
+    Plotly.newPlot('chart-heures', [{
+      type: 'bar',
+      x: d.heures.map(function(r) { return (r.heure != null ? r.heure : '?') + 'h'; }),
+      y: d.heures.map(function(r) { return r.nb; }),
+      marker: { color: ORANGE },
+      hovertemplate: '%{x} → %{y} diffusions<extra></extra>'
+    }], layoutBase, opts);
+  } else document.getElementById('chart-heures').innerHTML = vide;
+
+  if (d.semaine && d.semaine.length) {
+    Plotly.newPlot('chart-semaine', [{
+      type: 'bar',
+      x: d.semaine.map(function(r) { return r.jour; }),
+      y: d.semaine.map(function(r) { return r.nb_diffusions; }),
+      marker: { color: NOIR },
+      hovertemplate: '%{x} → %{y} diffusions<extra></extra>'
+    }], layoutBase, opts);
+  } else document.getElementById('chart-semaine').innerHTML = vide;
+
+  if (d.jours && d.jours.length) {
+    Plotly.newPlot('chart-jours', [{
+      type: 'scatter', mode: 'lines+markers',
+      x: d.jours.map(function(r) { return r.date; }),
+      y: d.jours.map(function(r) { return r.nb; }),
+      line: { color: ORANGE, width: 3 },
+      marker: { size: 10, color: ORANGE },
+      fill: 'tozeroy', fillcolor: 'rgba(255, 122, 0, 0.1)',
+      hovertemplate: '%{x}<br>%{y} diffusions<extra></extra>'
+    }], Object.assign({}, layoutBase, { margin: { l: 40, r: 20, t: 10, b: 60 } }), opts);
+  } else document.getElementById('chart-jours').innerHTML = vide;
+
+  if (d.annees && d.annees.length) {
+    Plotly.newPlot('chart-annees', [{
+      type: 'bar',
+      x: d.annees.map(function(r) { return r.annee; }),
+      y: d.annees.map(function(r) { return r.nb_diffusions; }),
+      marker: { color: ORANGE },
+      hovertemplate: '%{x} → %{y} diffusions<extra></extra>'
+    }], Object.assign({}, layoutBase, { xaxis: { type: 'category', gridcolor: '#eee' } }), opts);
+  } else document.getElementById('chart-annees').innerHTML = vide;
+
+  // Explicit vs Clean
+  if (d.explicit && d.explicit.length) {
+    const labels = d.explicit.map(function(r) { return r.type_contenu; });
+    const vals = d.explicit.map(function(r) { return Number(r.nb) || 0; });
+    const pcts = d.explicit.map(function(r) { return Number(r.pct) || 0; });
+    const couleurs = labels.map(function(l) {
+      return /explicit/i.test(l) ? ORANGE : NOIR;
+    });
+    Plotly.newPlot('chart-explicit', [{
+      type: 'pie', hole: 0.55,
+      labels: labels,
+      values: vals,
+      marker: { colors: couleurs },
+      text: pcts.map(function(p) { return p.toFixed(1) + '%'; }),
+      textinfo: 'label+percent',
+      hovertemplate: '%{label}<br>%{value} diffusions (%{text})<extra></extra>'
+    }], layoutDonut, opts);
+  } else document.getElementById('chart-explicit').innerHTML = vide;
+
+  rendreTable('table-albums', d.albums || [], [
+    { c: 'album', t: 'Album' }, { c: 'nb', t: 'Diff.' }
+  ], vide);
+  rendreTable('table-recurrents', d.recurrents || [], [
+    { c: 'artistes', t: 'Artiste' }, { c: 'nb_jours', t: 'Jours' }, { c: 'nb_diffusions', t: 'Diff.' }
+  ], vide);
+  rendreTable('table-titres-rec', d.titres_recurrents || [], [
+    { c: 'artistes', t: 'Artiste' }, { c: 'titre', t: 'Titre' }, { c: 'nb_jours', t: 'Jours' }
+  ], vide);
+  rendreTable('table-diversif', d.diversifies || [], [
+    { c: 'artistes', t: 'Artiste' }, { c: 'nb_titres', t: 'Titres' }, { c: 'nb_diffusions', t: 'Diff.' }
+  ], vide);
+
+  // Émissions
+  const now = new Date();
+  const estWeekend = now.getDay() === 0 || now.getDay() === 6;
+  const emissions = estWeekend ? EMISSIONS_WEEKEND : EMISSIONS_SEMAINE;
+  document.getElementById('table-emissions').innerHTML =
+    emissions.map(function(e) {
+      return '<div class="emission">' +
+        '<div class="horaire">' + e.horaire + '</div>' +
+        '<div class="nom"><strong>' + e.nom + '</strong>' +
+        '<span>avec ' + e.animateur + '</span></div>' +
+        '</div>';
+    }).join('');
+
+  // Derniers morceaux
+  const derniers = (d.derniers_morceaux || []).slice(0, 20);
+  if (derniers.length) {
+    let html = '<table><thead><tr><th></th><th>Heure</th><th>Artiste</th><th>Titre</th><th>Album</th></tr></thead><tbody>';
+    for (const m of derniers) {
+      const heure = m.heure != null ? String(m.heure).padStart(2, '0') + 'h' : '—';
+      const pochette = m.cover_deezer
+        ? '<span class="pochette-cell" style="background-image:url(\'' + m.cover_deezer + '\')"></span>'
+        : '<span class="pochette-cell"></span>';
+      const badge = m.explicit ? '<span class="explicit-badge">EXPLICIT</span>' : '';
+      html += '<tr><td style="width:50px">' + pochette + '</td>' +
+        '<td>' + heure + '</td>' +
+        '<td>' + (m.artistes || '—') + badge + '</td>' +
+        '<td>' + (m.titre || '—') + '</td>' +
+        '<td>' + (m.album || '—') + '</td></tr>';
+    }
+    html += '</tbody></table>';
+    document.getElementById('table-derniers').innerHTML = html;
+  } else {
+    document.getElementById('table-derniers').innerHTML = vide;
+  }
+}
+
+function rendreTable(id, rows, cols, vide) {
+  const cible = document.getElementById(id);
+  if (!rows || !rows.length) { cible.innerHTML = vide; return; }
+  let html = '<table><thead><tr>';
+  for (const c of cols) html += '<th>' + c.t + '</th>';
+  html += '</tr></thead><tbody>';
+  rows.slice(0, 20).forEach(function(r, i) {
+    html += '<tr>';
+    cols.forEach(function(c, j) {
+      let v = r[c.c];
+      if (v == null || v === '') v = '—';
+      if (j === 0 && cols.length > 1) {
+        const cls = i < 3 ? 'rang top3' : 'rang';
+        v = '<span class="' + cls + '">' + (i + 1) + '</span>' + v;
+      }
+      html += '<td>' + v + '</td>';
+    });
+    html += '</tr>';
+  });
+  cible.innerHTML = html + '</tbody></table>';
+}
+
+// ============================================================
+// ON AIR
+// ============================================================
+function chargerOnAir(r) {
+  const bloc = document.getElementById('on-air');
+  if (!r || !r.titre) { bloc.style.display = 'none'; return; }
+  const maintenant = Math.floor(Date.now() / 1000);
+  const debut = Number(r.start_ts) || 0;
+  const age = maintenant - debut;
+  const vieux = age > SEUIL_VIEUX;
+
+  DERNIER_TS = debut;
+  DERNIER_DUREE = (Number(r.end_ts) || 0) - debut;
+
+  bloc.style.display = 'flex';
+  bloc.classList.toggle('stale', vieux);
+  document.getElementById('on-air-label').textContent =
+    vieux ? 'Dernier morceau connu' : 'Morceau en cours';
+  document.getElementById('countdown-label').textContent =
+    vieux ? 'Il y a' : 'Depuis diffusion';
+  document.getElementById('on-air-titre').textContent = r.titre || '—';
+  document.getElementById('on-air-artiste').textContent = r.artistes || '—';
+
+  const cover = document.getElementById('on-air-cover');
+  if (r.cover_deezer) cover.style.backgroundImage = "url('" + r.cover_deezer + "')";
+  else cover.style.backgroundImage = '';
+
+  const extrait = document.getElementById('on-air-extrait');
+  if (r.preview_mp3 && !vieux) {
+    extrait.href = r.preview_mp3;
+    extrait.style.display = 'inline-flex';
+  } else {
+    extrait.style.display = 'none';
+  }
+  majCompteur();
+}
+
+function majCompteur() {
+  const el = document.getElementById('countdown');
+  if (!el || !DERNIER_TS) return;
+  const sec = Math.floor(Date.now() / 1000) - DERNIER_TS;
+  if (sec > SEUIL_VIEUX) { el.textContent = '--:--'; return; }
+  if (DERNIER_DUREE > 0 && sec >= DERNIER_DUREE) {
+    el.textContent = formatDuree(DERNIER_DUREE); return;
+  }
+  el.textContent = formatDuree(sec);
+}
+setInterval(majCompteur, 1000);
+
+function formatDuree(sec) {
+  const m = String(Math.floor(sec / 60)).padStart(2, '0');
+  const s = String(sec % 60).padStart(2, '0');
+  return m + ':' + s;
+}
+
+// ============================================================
+// LECTEUR FLUX
+// ============================================================
+function toggleFlux() {
+  const audio = document.getElementById('audio-flux');
+  const btn = document.getElementById('btn-flux');
+  if (FLUX_ACTIF) {
+    audio.pause();
+    audio.src = '';
+    FLUX_ACTIF = false;
+    btn.classList.remove('actif');
+    btn.textContent = '🎧 Écouter Exo FM';
+  } else {
+    audio.src = 'https://exofmreunion.ice.infomaniak.ch/exofmreunion-128.aac';
+    audio.play().then(function() {
+      FLUX_ACTIF = true;
+      btn.classList.add('actif');
+      btn.textContent = '⏸ Couper le son';
+    }).catch(function(err) {
+      alert('Impossible de lire le flux : ' + err.message);
+    });
+  }
+}
+
+// ============================================================
+// AUTO-REFRESH
+// ============================================================
+function demarrerAuto() {
+  if (INTERVALLE_AUTO) clearInterval(INTERVALLE_AUTO);
+  INTERVALLE_AUTO = setInterval(charger, AUTO_REFRESH);
+}
+
+charger();
+demarrerAuto();
+</script>
+</body>
+</html>
