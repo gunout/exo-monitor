@@ -13,27 +13,44 @@
     --exo-orange-dark: #e56a00;
     --exo-jaune: #ffc107;
     --exo-noir: #1a1a1a;
+    --exo-dark: #2a2a2a;
     --exo-gris: #faf7f2;
+    --exo-gris-2: #f0e6d8;
     --exo-border: #f0e6d8;
+    --exo-text: #1a1a1a;
     --exo-muted: #8a7560;
-    --exo-blanc: #ffffff;
+    --exo-white: #ffffff;
+    --exo-gold: #ffc107;
+    --exo-silver: #b0bec5;
+    --exo-bronze: #cd7f32;
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
-    background: #fff; color: var(--exo-noir);
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    min-height: 100vh; font-size: 14px;
+    background: var(--exo-white);
+    color: var(--exo-text);
+    font-family: 'Helvetica Neue', 'Roboto Condensed', Arial, sans-serif;
+    min-height: 100vh;
+    font-size: 14px;
   }
   .topbar {
-    background: var(--exo-noir); color: #fff;
-    padding: 8px 24px; display: flex; align-items: center;
-    justify-content: space-between; font-size: 11px;
-    font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-    position: sticky; top: 0; z-index: 100;
+    background: var(--exo-noir);
+    color: #fff;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-md);
   }
-  .topbar .live { display: inline-flex; align-items: center; gap: 8px; }
+  .topbar .live { display: inline-flex; align-items: center; gap: 8px; color: #fff; }
   .topbar .live::before {
     content: ''; width: 8px; height: 8px;
     background: var(--exo-orange); border-radius: 50%;
@@ -51,174 +68,426 @@
   .refresh-btn:hover { background: var(--exo-orange); border-color: var(--exo-orange); }
   .header {
     background: linear-gradient(135deg, #ff7a00 0%, #ff9d3d 50%, #ffc107 100%);
-    color: #fff; padding: 28px 24px;
-    display: flex; align-items: center; gap: 20px;
-    position: relative; overflow: hidden;
+    color: #fff;
+    padding: 28px 24px;
+    border-bottom: 4px solid var(--exo-noir);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
   }
   .header::after {
-    content: ''; position: absolute; right: -50px; top: -50px;
+    content: '';
+    position: absolute;
+    right: -50px; top: -50px;
     width: 200px; height: 200px;
     background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
   }
   .logo {
-    font-size: 42px; font-weight: 900; letter-spacing: -2px;
-    color: #fff; font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: #fff;
+    font-family: 'Arial Black', Arial, sans-serif;
     text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
     position: relative; z-index: 1;
   }
   .logo span { color: #fff8e1; }
   .logo-sub {
-    color: rgba(255,255,255,0.95); font-size: 10px;
-    text-transform: uppercase; letter-spacing: 4px;
+    color: rgba(255,255,255,0.95);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
     border-left: 1px solid rgba(255,255,255,0.4);
-    padding-left: 20px; font-weight: 700;
+    padding-left: 24px;
+    font-weight: 700;
     position: relative; z-index: 1;
   }
-  #etat {
-    background: var(--exo-gris); border-left: 4px solid var(--exo-orange);
-    padding: 10px 16px; font-size: 12px; margin: 16px 24px 0;
-    color: var(--exo-muted); text-transform: uppercase;
-    letter-spacing: 1px; font-weight: 600;
+  .nav {
+    background: var(--exo-noir);
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    position: sticky;
+    top: 40px;
+    z-index: 99;
   }
-  #etat.erreur { background: #ffe5d0; color: var(--exo-orange-dark); }
+  .nav a {
+    color: #ccc;
+    text-decoration: none;
+    padding: 14px 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav a:hover {
+    color: #fff;
+    background: rgba(255,122,0,0.15);
+    border-bottom-color: var(--exo-orange);
+  }
+  #etat {
+    background: var(--exo-gris);
+    border-left: 4px solid var(--exo-orange);
+    padding: 10px 16px;
+    font-size: 12px;
+    margin: 16px 24px 0;
+    color: var(--exo-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  #etat.erreur {
+    background: #ffe5d0;
+    border-left-color: var(--exo-orange-dark);
+    color: var(--exo-orange-dark);
+  }
   .on-air {
     margin: 16px 24px 24px;
     background: linear-gradient(135deg, #fff 0%, #fff8ef 100%);
     border: 1px solid var(--exo-border);
     border-left: 6px solid var(--exo-orange);
-    padding: 20px; display: flex; align-items: center; gap: 20px;
-    box-shadow: var(--shadow-sm);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: relative;
     transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
   }
   .on-air.stale { border-left-color: var(--exo-muted); opacity: 0.7; }
   .on-air .cover {
-    width: 110px; height: 110px; background: var(--exo-gris);
-    background-size: cover; background-position: center;
-    flex-shrink: 0; border: 1px solid var(--exo-border);
+    width: 110px; height: 110px;
+    background: var(--exo-gris);
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+    border: 1px solid var(--exo-border);
     box-shadow: var(--shadow-md);
   }
   .on-air .info { flex: 1; min-width: 0; }
   .on-air .label {
-    color: var(--exo-orange); font-size: 10px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 3px;
-    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+    color: var(--exo-orange);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   .on-air .label::before {
-    content: ''; width: 8px; height: 8px;
-    background: var(--exo-orange); border-radius: 50%;
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--exo-orange);
+    border-radius: 50%;
     animation: blink 1.5s infinite;
     box-shadow: 0 0 8px var(--exo-orange);
   }
   .on-air.stale .label { color: var(--exo-muted); }
   .on-air.stale .label::before { background: var(--exo-muted); animation: none; box-shadow: none; }
   .on-air .titre {
-    font-size: 26px; font-weight: 900; color: var(--exo-noir);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    text-transform: uppercase; letter-spacing: -0.5px;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--exo-noir);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
   }
   .on-air .artiste {
-    color: var(--exo-orange); font-size: 15px;
-    margin-top: 4px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--exo-orange);
+    font-size: 16px;
+    margin-top: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
   .on-air .actions {
-    display: flex; gap: 10px; margin-top: 12px; align-items: center; flex-wrap: wrap;
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    align-items: center;
   }
   .on-air .extrait {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--exo-orange); color: #fff; font-size: 11px;
-    padding: 8px 14px; text-decoration: none;
-    text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--exo-orange);
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 14px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 800;
     transition: all 0.2s;
   }
   .on-air .extrait:hover { background: var(--exo-orange-dark); transform: translateY(-1px); }
   .on-air .player-flux {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--exo-noir); color: #fff; font-size: 11px;
-    padding: 8px 14px; cursor: pointer; border: none;
-    text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--exo-noir);
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 14px;
+    cursor: pointer;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 800;
     transition: all 0.2s;
   }
   .on-air .player-flux:hover { background: #333; }
   .on-air .player-flux.actif { background: var(--exo-orange); }
   .on-air .countdown { text-align: right; font-variant-numeric: tabular-nums; }
   .on-air .countdown-label {
-    color: var(--exo-muted); font-size: 10px;
-    text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+    color: var(--exo-muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
   }
   .on-air .countdown-value {
-    font-size: 38px; font-weight: 900; color: var(--exo-orange);
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--exo-orange);
     margin-top: 4px;
+    letter-spacing: -1.5px;
   }
   .on-air.stale .countdown-value { color: var(--exo-muted); }
   .kpis {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1px; background: var(--exo-border);
-    border: 1px solid var(--exo-border); margin: 0 24px 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--exo-border);
+    border: 1px solid var(--exo-border);
+    margin: 0 24px 24px;
     box-shadow: var(--shadow-sm);
   }
-  .kpi { background: #fff; padding: 20px; position: relative; }
+  .kpi {
+    background: var(--exo-white);
+    padding: 22px;
+    position: relative;
+    transition: all 0.2s;
+  }
   .kpi:hover { background: var(--exo-gris); }
   .kpi::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
     height: 3px;
     background: linear-gradient(90deg, var(--exo-orange), var(--exo-jaune));
   }
   .kpi-label {
-    color: var(--exo-muted); font-size: 10px;
-    text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+    color: var(--exo-muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
   }
   .kpi-value {
-    font-size: 38px; font-weight: 900; color: var(--exo-noir);
-    margin-top: 6px; letter-spacing: -1.5px;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--exo-noir);
+    margin-top: 6px;
+    letter-spacing: -1.5px;
+    font-variant-numeric: tabular-nums;
   }
-  .conteneur { max-width: 1600px; margin: 0 auto; padding: 0 24px 60px; }
+  .conteneur {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
   .section-titre {
-    font-size: 14px; font-weight: 900; text-transform: uppercase;
-    letter-spacing: 3px; color: var(--exo-noir);
-    margin: 32px 0 12px; padding-bottom: 8px;
+    font-size: 14px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--exo-noir);
+    margin: 32px 0 16px;
+    padding-bottom: 10px;
     border-bottom: 3px solid var(--exo-orange);
     display: inline-block;
   }
   .grille {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    gap: 16px; margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
   }
   .grille-3 {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 16px; margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
   }
   .carte {
-    background: #fff; border: 1px solid var(--exo-border);
-    box-shadow: var(--shadow-sm); transition: all 0.3s;
+    background: var(--exo-white);
+    border: 1px solid var(--exo-border);
+    transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
+    border-radius: 4px;
+    overflow: hidden;
   }
-  .carte:hover { border-color: var(--exo-orange); box-shadow: var(--shadow-md); }
+  .carte:hover {
+    border-color: var(--exo-orange);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
   .carte-titre {
-    padding: 12px 16px; font-size: 11px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 2px;
+    padding: 14px 18px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     color: #fff;
     background: linear-gradient(90deg, var(--exo-noir), var(--exo-orange));
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .carte-titre .badge {
-    background: var(--exo-jaune); color: var(--exo-noir);
-    padding: 2px 8px; font-size: 9px; font-weight: 900;
+    background: var(--exo-jaune);
+    color: var(--exo-noir);
+    padding: 3px 10px;
+    font-size: 9px;
+    font-weight: 900;
     letter-spacing: 1px;
+    border-radius: 10px;
   }
-  .carte-corps { padding: 16px; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--exo-border); }
+  .carte-corps { padding: 18px; }
+  .chart-container { min-height: 350px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--exo-border);
+  }
   th {
-    color: #fff; font-weight: 800; font-size: 10px;
-    text-transform: uppercase; letter-spacing: 1.5px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
     background: var(--exo-noir);
   }
+  tr { transition: all 0.15s; cursor: pointer; }
   tr:hover { background: var(--exo-gris); }
+  td { color: var(--exo-text); font-weight: 500; }
   .rang {
-    display: inline-block; width: 24px; text-align: center;
-    font-weight: 900; margin-right: 8px;
+    display: inline-block;
+    width: 26px;
+    text-align: center;
+    font-weight: 900;
+    color: var(--exo-noir);
+    margin-right: 8px;
+    font-size: 13px;
   }
-  .rang.top3 { background: var(--exo-orange); color: #fff; padding: 2px 0; }
+  .rang.top1 { background: var(--exo-gold); color: #000; padding: 3px 0; border-radius: 4px; }
+  .rang.top2 { background: var(--exo-silver); color: #000; padding: 3px 0; border-radius: 4px; }
+  .rang.top3 { background: var(--exo-bronze); color: #fff; padding: 3px 0; border-radius: 4px; }
+  .vide {
+    color: var(--exo-muted);
+    font-style: italic;
+    padding: 32px;
+    text-align: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  footer {
+    margin-top: 60px;
+    padding: 32px 24px;
+    background: var(--exo-noir);
+    color: #999;
+    text-align: center;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+  }
+  footer strong { color: var(--exo-orange); }
+  @media (max-width: 700px) {
+    .logo { font-size: 28px; }
+    .logo-sub { display: none; }
+    .kpi-value { font-size: 28px; }
+    .on-air { flex-direction: column; text-align: center; }
+    .on-air .countdown { text-align: center; }
+    .grille { grid-template-columns: 1fr; }
+    .nav a { padding: 10px 12px; font-size: 10px; }
+  }
+  .modale {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modale.visible { display: flex; }
+  .modale-contenu {
+    background: #fff;
+    max-width: 600px; width: 100%;
+    max-height: 80vh; overflow-y: auto;
+    border-radius: 4px;
+    box-shadow: var(--shadow-md);
+  }
+  .modale-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px;
+    background: var(--exo-noir); color: #fff;
+  }
+  .modale-titre { font-weight: 900; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; }
+  .modale-close {
+    background: none; border: none; color: #fff;
+    font-size: 24px; cursor: pointer; line-height: 1;
+  }
+  .modale-close:hover { color: var(--exo-orange); }
+  .artiste-morceau {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--exo-border);
+  }
+  .pochette {
+    width: 48px; height: 48px; flex-shrink: 0;
+    background: var(--exo-gris-2) center/cover;
+    border: 1px solid var(--exo-border);
+  }
+  .infos { flex: 1; min-width: 0; }
+  .titre-m { font-weight: 700; font-size: 13px; }
+  .meta-m { color: var(--exo-muted); font-size: 11px; }
+  .heure-m {
+    font-weight: 900; color: var(--exo-orange);
+    font-variant-numeric: tabular-nums;
+  }
+  .emission {
+    padding: 12px;
+    border-bottom: 1px solid var(--exo-border);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .emission:last-child { border-bottom: none; }
+  .emission .horaire {
+    font-weight: 900; color: var(--exo-orange);
+    font-size: 13px; min-width: 90px; font-variant-numeric: tabular-nums;
+  }
+  .emission .nom { flex: 1; }
+  .emission .nom strong { display: block; font-size: 13px; }
+  .emission .nom span { color: var(--exo-muted); font-size: 11px; }
   .pochette-cell {
     width: 40px; height: 40px;
     background: var(--exo-gris); background-size: cover;
@@ -229,38 +498,6 @@
     display: inline-block; background: var(--exo-orange); color: #fff;
     font-size: 9px; font-weight: 900; padding: 2px 6px;
     letter-spacing: 1px; margin-left: 8px;
-  }
-  .vide {
-    color: var(--exo-muted); font-style: italic; padding: 24px;
-    text-align: center; font-size: 12px;
-    text-transform: uppercase; letter-spacing: 1px;
-  }
-  .emission {
-    padding: 12px; border-bottom: 1px solid var(--exo-border);
-    display: flex; gap: 12px; align-items: center;
-  }
-  .emission:last-child { border-bottom: none; }
-  .emission .horaire {
-    font-weight: 900; color: var(--exo-orange);
-    font-size: 13px; min-width: 90px; font-variant-numeric: tabular-nums;
-  }
-  .emission .nom { flex: 1; }
-  .emission .nom strong { display: block; font-size: 13px; }
-  .emission .nom span { color: var(--exo-muted); font-size: 11px; }
-  footer {
-    margin-top: 60px; padding: 32px 24px;
-    background: var(--exo-noir); color: #999;
-    text-align: center; font-size: 10px;
-    text-transform: uppercase; letter-spacing: 3px; font-weight: 700;
-  }
-  footer strong { color: var(--exo-orange); }
-  @media (max-width: 700px) {
-    .logo { font-size: 28px; }
-    .logo-sub { display: none; }
-    .kpi-value { font-size: 28px; }
-    .on-air { flex-direction: column; text-align: center; }
-    .on-air .countdown { text-align: center; }
-    .grille { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -277,6 +514,13 @@
 <div class="header">
   <div class="logo">EXO <span>FM</span></div>
   <div class="logo-sub">Monitor Programmation · La Réunion</div>
+</div>
+
+<div class="nav">
+  <a href="#classement">Classement</a>
+  <a href="#temporel">Répartition</a>
+  <a href="#analyses">Analyses</a>
+  <a href="#details">Détails</a>
 </div>
 
 <div id="etat">Initialisation...</div>
@@ -305,33 +549,33 @@
 <div class="kpis" id="kpis"></div>
 
 <div class="conteneur">
-  <h2 class="section-titre">Classement</h2>
+  <h2 class="section-titre" id="classement">Classement</h2>
   <div class="grille">
-    <div class="carte"><div class="carte-titre">Top artistes <span class="badge">TOP 15</span></div><div class="carte-corps"><div id="chart-artistes"></div></div></div>
-    <div class="carte"><div class="carte-titre">Top titres <span class="badge">TOP 15</span></div><div class="carte-corps"><div id="chart-titres"></div></div></div>
+    <div class="carte"><div class="carte-titre">Top artistes <span class="badge">TOP 15</span></div><div class="carte-corps"><div id="chart-artistes" class="chart-container"></div></div></div>
+    <div class="carte"><div class="carte-titre">Top titres <span class="badge">TOP 15</span></div><div class="carte-corps"><div id="chart-titres" class="chart-container"></div></div></div>
   </div>
 
-  <h2 class="section-titre">Répartition</h2>
+  <h2 class="section-titre" id="temporel">Répartition temporelle</h2>
   <div class="grille">
-    <div class="carte"><div class="carte-titre">Par heure</div><div class="carte-corps"><div id="chart-heures"></div></div></div>
-    <div class="carte"><div class="carte-titre">Par jour de la semaine</div><div class="carte-corps"><div id="chart-semaine"></div></div></div>
+    <div class="carte"><div class="carte-titre">Par heure</div><div class="carte-corps"><div id="chart-heures" class="chart-container"></div></div></div>
+    <div class="carte"><div class="carte-titre">Par jour de la semaine</div><div class="carte-corps"><div id="chart-semaine" class="chart-container"></div></div></div>
   </div>
 
-  <div class="carte" style="margin-bottom:16px;">
+  <div class="carte" style="margin-bottom:20px;">
     <div class="carte-titre">Évolution journalière</div>
-    <div class="carte-corps"><div id="chart-jours"></div></div>
+    <div class="carte-corps"><div id="chart-jours" class="chart-container"></div></div>
   </div>
 
-  <h2 class="section-titre">Analyses</h2>
+  <h2 class="section-titre" id="analyses">Analyses</h2>
   <div class="grille-3">
-    <div class="carte"><div class="carte-titre">Par année</div><div class="carte-corps"><div id="chart-annees"></div></div></div>
-    <div class="carte"><div class="carte-titre">Explicit vs Clean</div><div class="carte-corps"><div id="chart-explicit"></div></div></div>
+    <div class="carte"><div class="carte-titre">Par année</div><div class="carte-corps"><div id="chart-annees" class="chart-container"></div></div></div>
+    <div class="carte"><div class="carte-titre">Explicit vs Clean</div><div class="carte-corps"><div id="chart-explicit" class="chart-container"></div></div></div>
     <div class="carte"><div class="carte-titre">Top albums</div><div class="carte-corps"><div id="table-albums"></div></div></div>
   </div>
 
-  <h2 class="section-titre">Détails</h2>
+  <h2 class="section-titre" id="details">Détails</h2>
   <div class="grille">
-    <div class="carte"><div class="carte-titre">Artistes récurrents</div><div class="carte-corps"><div id="table-recurrents"></div></div></div>
+    <div class="carte"><div class="carte-titre">Artistes récurrents <span class="badge">CLIQUABLE</span></div><div class="carte-corps"><div id="table-recurrents"></div></div></div>
     <div class="carte"><div class="carte-titre">Titres récurrents</div><div class="carte-corps"><div id="table-titres-rec"></div></div></div>
   </div>
 
@@ -348,36 +592,48 @@
 </div>
 
 <footer>
-  <strong>EXO FM MONITOR</strong> · Identification Shazam · Enrichissement iTunes · v1.1
+  <strong>EXO FM MONITOR</strong> · Identification Shazam · Enrichissement iTunes · v1.2
 </footer>
+
+<div class="modale" id="modale" onclick="if(event.target===this) fermerModale()">
+  <div class="modale-contenu">
+    <div class="modale-header">
+      <div class="modale-titre" id="modale-titre">—</div>
+      <button class="modale-close" onclick="fermerModale()">×</button>
+    </div>
+    <div id="modale-corps"></div>
+  </div>
+</div>
 
 <script>
 // ============================================================
 // CONFIG
 // ============================================================
-const SEUIL_VIEUX = 600;
-const AUTO_REFRESH = 60000;
+const SEUIL_VIEUX_MORCEAU = 600;
+const AUTO_REFRESH_MS = 60000;
 const ORANGE = '#ff7a00';
 const NOIR = '#1a1a1a';
 
 const EMISSIONS_SEMAINE = [
   { horaire: '05h-09h', nom: 'Zot Morning', animateur: 'Akim & Anaïs' },
   { horaire: '09h-13h', nom: 'Planet Exo', animateur: 'Ricardo' },
-  { horaire: '15h-19h', nom: 'Le Club Exo', animateur: 'Quentin' },
+  { horaire: '15h-19h', nom: 'Le Club Exo', animateur: 'Quentin' }
 ];
 const EMISSIONS_WEEKEND = [
   { horaire: '06h-12h', nom: 'Zot Morning Week-end', animateur: 'Quentin' },
   { horaire: '12h-15h', nom: 'Le Sun Hit', animateur: 'DJ Daddy Mad & DJ Niaka' },
   { horaire: '15h-19h', nom: 'Beach Party', animateur: 'Samix' },
-  { horaire: '19h-23h', nom: 'La Boom Bébé', animateur: 'DJ Luka & DJ Micka' },
+  { horaire: '19h-23h', nom: 'La Boom Bébé', animateur: 'DJ Luka & DJ Micka' }
 ];
 
 // ============================================================
-// ÉTAT
+// VARIABLES
 // ============================================================
-let DERNIER_TS = 0;
-let DERNIER_DUREE = 0;
+let DONNEES = {};
+let ARTISTES_INDEX = {};
 let INTERVALLE_AUTO = null;
+let DERNIER_MORCEAU_TS = 0;
+let DERNIER_MORCEAU_DUREE = 0;
 let FLUX_ACTIF = false;
 
 // ============================================================
@@ -389,10 +645,13 @@ async function charger() {
     const rep = await fetch('data.json?t=' + Date.now());
     if (!rep.ok) throw new Error('HTTP ' + rep.status);
     const data = await rep.json();
+    DONNEES = data;
+
     etat.className = '';
     etat.textContent = 'Données synchronisées';
     document.getElementById('horodatage').textContent =
-      'Mise à jour : ' + new Date(data.genere_ts * 1000).toLocaleTimeString('fr-FR');
+      'Mise à jour : ' + new Date((data.genere_ts || Date.now() / 1000) * 1000).toLocaleTimeString('fr-FR');
+
     construire(data);
     chargerOnAir(data.dernier_morceau);
   } catch (e) {
@@ -402,244 +661,65 @@ async function charger() {
 }
 
 // ============================================================
-// CONSTRUCTION
-// ============================================================
-function construire(d) {
-  const vide = '<div class="vide">Pas encore de données</div>';
-
-  const vol = d.volume || {};
-  const kpis = [
-    ['Diffusions', vol.nb_diffusions || 0],
-    ['Artistes', vol.nb_artistes || 0],
-    ['Titres', vol.nb_titres || 0],
-    ['Heures', Number(vol.heures || 0).toFixed(2)],
-    ['Durée moy.', Number(vol.duree_moy || 0).toFixed(0) + 's']
-  ];
-  document.getElementById('kpis').innerHTML = kpis.map(function(k) {
-    return '<div class="kpi"><div class="kpi-label">' + k[0] + '</div><div class="kpi-value">' + k[1] + '</div></div>';
-  }).join('');
-
-  const layoutBase = {
-    paper_bgcolor: '#fff', plot_bgcolor: '#fff',
-    font: { color: '#111', size: 11, family: 'Helvetica Neue, Arial' },
-    margin: { l: 40, r: 20, t: 10, b: 40 },
-    xaxis: { gridcolor: '#eee' }, yaxis: { gridcolor: '#eee' }
-  };
-  const layoutBar = Object.assign({}, layoutBase, {
-    margin: { l: 180, r: 20, t: 10, b: 40 },
-    yaxis: { autorange: 'reversed', gridcolor: '#eee' }
-  });
-  const layoutDonut = {
-    paper_bgcolor: '#fff', plot_bgcolor: '#fff',
-    font: { color: '#111', size: 11, family: 'Helvetica Neue, Arial' },
-    margin: { l: 20, r: 20, t: 10, b: 20 },
-    showlegend: true,
-    legend: { orientation: 'v', x: 1, y: 0.5 }
-  };
-  const opts = { displayModeBar: false, responsive: true };
-
-  if (d.top_artistes && d.top_artistes.length) {
-    const a = d.top_artistes.slice(0, 15).reverse();
-    Plotly.newPlot('chart-artistes', [{
-      type: 'bar', orientation: 'h',
-      x: a.map(function(r) { return r.nb_diffusions; }),
-      y: a.map(function(r) { return r.artistes; }),
-      marker: { color: ORANGE },
-      text: a.map(function(r) { return r.nb_diffusions; }),
-      textposition: 'outside',
-      hovertemplate: '%{y}<br>%{x} diffusions<extra></extra>'
-    }], layoutBar, opts);
-  } else document.getElementById('chart-artistes').innerHTML = vide;
-
-  if (d.top_titres && d.top_titres.length) {
-    const t = d.top_titres.slice(0, 15).reverse();
-    Plotly.newPlot('chart-titres', [{
-      type: 'bar', orientation: 'h',
-      x: t.map(function(r) { return r.nb_diffusions; }),
-      y: t.map(function(r) { return (r.artistes || '') + ' — ' + (r.titre || ''); }),
-      marker: { color: NOIR },
-      text: t.map(function(r) { return r.nb_diffusions; }),
-      textposition: 'outside',
-      hovertemplate: '%{y}<br>%{x} diffusions<extra></extra>'
-    }], layoutBar, opts);
-  } else document.getElementById('chart-titres').innerHTML = vide;
-
-  if (d.heures && d.heures.length) {
-    Plotly.newPlot('chart-heures', [{
-      type: 'bar',
-      x: d.heures.map(function(r) { return (r.heure != null ? r.heure : '?') + 'h'; }),
-      y: d.heures.map(function(r) { return r.nb; }),
-      marker: { color: ORANGE },
-      hovertemplate: '%{x} → %{y} diffusions<extra></extra>'
-    }], layoutBase, opts);
-  } else document.getElementById('chart-heures').innerHTML = vide;
-
-  if (d.semaine && d.semaine.length) {
-    Plotly.newPlot('chart-semaine', [{
-      type: 'bar',
-      x: d.semaine.map(function(r) { return r.jour; }),
-      y: d.semaine.map(function(r) { return r.nb_diffusions; }),
-      marker: { color: NOIR },
-      hovertemplate: '%{x} → %{y} diffusions<extra></extra>'
-    }], layoutBase, opts);
-  } else document.getElementById('chart-semaine').innerHTML = vide;
-
-  if (d.jours && d.jours.length) {
-    Plotly.newPlot('chart-jours', [{
-      type: 'scatter', mode: 'lines+markers',
-      x: d.jours.map(function(r) { return r.date; }),
-      y: d.jours.map(function(r) { return r.nb; }),
-      line: { color: ORANGE, width: 3 },
-      marker: { size: 10, color: ORANGE },
-      fill: 'tozeroy', fillcolor: 'rgba(255, 122, 0, 0.1)',
-      hovertemplate: '%{x}<br>%{y} diffusions<extra></extra>'
-    }], Object.assign({}, layoutBase, { margin: { l: 40, r: 20, t: 10, b: 60 } }), opts);
-  } else document.getElementById('chart-jours').innerHTML = vide;
-
-  if (d.annees && d.annees.length) {
-    Plotly.newPlot('chart-annees', [{
-      type: 'bar',
-      x: d.annees.map(function(r) { return r.annee; }),
-      y: d.annees.map(function(r) { return r.nb_diffusions; }),
-      marker: { color: ORANGE },
-      hovertemplate: '%{x} → %{y} diffusions<extra></extra>'
-    }], Object.assign({}, layoutBase, { xaxis: { type: 'category', gridcolor: '#eee' } }), opts);
-  } else document.getElementById('chart-annees').innerHTML = vide;
-
-  // Explicit vs Clean
-  if (d.explicit && d.explicit.length) {
-    const labels = d.explicit.map(function(r) { return r.type_contenu; });
-    const vals = d.explicit.map(function(r) { return Number(r.nb) || 0; });
-    const pcts = d.explicit.map(function(r) { return Number(r.pct) || 0; });
-    const couleurs = labels.map(function(l) {
-      return /explicit/i.test(l) ? ORANGE : NOIR;
-    });
-    Plotly.newPlot('chart-explicit', [{
-      type: 'pie', hole: 0.55,
-      labels: labels,
-      values: vals,
-      marker: { colors: couleurs },
-      text: pcts.map(function(p) { return p.toFixed(1) + '%'; }),
-      textinfo: 'label+percent',
-      hovertemplate: '%{label}<br>%{value} diffusions (%{text})<extra></extra>'
-    }], layoutDonut, opts);
-  } else document.getElementById('chart-explicit').innerHTML = vide;
-
-  rendreTable('table-albums', d.albums || [], [
-    { c: 'album', t: 'Album' }, { c: 'nb', t: 'Diff.' }
-  ], vide);
-  rendreTable('table-recurrents', d.recurrents || [], [
-    { c: 'artistes', t: 'Artiste' }, { c: 'nb_jours', t: 'Jours' }, { c: 'nb_diffusions', t: 'Diff.' }
-  ], vide);
-  rendreTable('table-titres-rec', d.titres_recurrents || [], [
-    { c: 'artistes', t: 'Artiste' }, { c: 'titre', t: 'Titre' }, { c: 'nb_jours', t: 'Jours' }
-  ], vide);
-  rendreTable('table-diversif', d.diversifies || [], [
-    { c: 'artistes', t: 'Artiste' }, { c: 'nb_titres', t: 'Titres' }, { c: 'nb_diffusions', t: 'Diff.' }
-  ], vide);
-
-  // Émissions
-  const now = new Date();
-  const estWeekend = now.getDay() === 0 || now.getDay() === 6;
-  const emissions = estWeekend ? EMISSIONS_WEEKEND : EMISSIONS_SEMAINE;
-  document.getElementById('table-emissions').innerHTML =
-    emissions.map(function(e) {
-      return '<div class="emission">' +
-        '<div class="horaire">' + e.horaire + '</div>' +
-        '<div class="nom"><strong>' + e.nom + '</strong>' +
-        '<span>avec ' + e.animateur + '</span></div>' +
-        '</div>';
-    }).join('');
-
-  // Derniers morceaux
-  const derniers = (d.derniers_morceaux || []).slice(0, 20);
-  if (derniers.length) {
-    let html = '<table><thead><tr><th></th><th>Heure</th><th>Artiste</th><th>Titre</th><th>Album</th></tr></thead><tbody>';
-    for (const m of derniers) {
-      const heure = m.heure != null ? String(m.heure).padStart(2, '0') + 'h' : '—';
-      const pochette = m.cover_deezer
-        ? '<span class="pochette-cell" style="background-image:url(\'' + m.cover_deezer + '\')"></span>'
-        : '<span class="pochette-cell"></span>';
-      const badge = m.explicit ? '<span class="explicit-badge">EXPLICIT</span>' : '';
-      html += '<tr><td style="width:50px">' + pochette + '</td>' +
-        '<td>' + heure + '</td>' +
-        '<td>' + (m.artistes || '—') + badge + '</td>' +
-        '<td>' + (m.titre || '—') + '</td>' +
-        '<td>' + (m.album || '—') + '</td></tr>';
-    }
-    html += '</tbody></table>';
-    document.getElementById('table-derniers').innerHTML = html;
-  } else {
-    document.getElementById('table-derniers').innerHTML = vide;
-  }
-}
-
-function rendreTable(id, rows, cols, vide) {
-  const cible = document.getElementById(id);
-  if (!rows || !rows.length) { cible.innerHTML = vide; return; }
-  let html = '<table><thead><tr>';
-  for (const c of cols) html += '<th>' + c.t + '</th>';
-  html += '</tr></thead><tbody>';
-  rows.slice(0, 20).forEach(function(r, i) {
-    html += '<tr>';
-    cols.forEach(function(c, j) {
-      let v = r[c.c];
-      if (v == null || v === '') v = '—';
-      if (j === 0 && cols.length > 1) {
-        const cls = i < 3 ? 'rang top3' : 'rang';
-        v = '<span class="' + cls + '">' + (i + 1) + '</span>' + v;
-      }
-      html += '<td>' + v + '</td>';
-    });
-    html += '</tr>';
-  });
-  cible.innerHTML = html + '</tbody></table>';
-}
-
-// ============================================================
 // ON AIR
 // ============================================================
 function chargerOnAir(r) {
   const bloc = document.getElementById('on-air');
-  if (!r || !r.titre) { bloc.style.display = 'none'; return; }
+  const label = document.getElementById('on-air-label');
+  const titreEl = document.getElementById('on-air-titre');
+  const artisteEl = document.getElementById('on-air-artiste');
+  const countdownEl = document.getElementById('countdown');
+  const countdownLabelEl = document.getElementById('countdown-label');
+  const coverEl = document.getElementById('on-air-cover');
+  const extraitEl = document.getElementById('on-air-extrait');
+
+  if (!r || !r.titre) {
+    bloc.style.display = 'none';
+    return;
+  }
+
   const maintenant = Math.floor(Date.now() / 1000);
   const debut = Number(r.start_ts) || 0;
   const age = maintenant - debut;
-  const vieux = age > SEUIL_VIEUX;
+  const estVieux = age > SEUIL_VIEUX_MORCEAU;
 
-  DERNIER_TS = debut;
-  DERNIER_DUREE = (Number(r.end_ts) || 0) - debut;
+  DERNIER_MORCEAU_TS = debut;
+  DERNIER_MORCEAU_DUREE = (Number(r.end_ts) || 0) - debut;
 
   bloc.style.display = 'flex';
-  bloc.classList.toggle('stale', vieux);
-  document.getElementById('on-air-label').textContent =
-    vieux ? 'Dernier morceau connu' : 'Morceau en cours';
-  document.getElementById('countdown-label').textContent =
-    vieux ? 'Il y a' : 'Depuis diffusion';
-  document.getElementById('on-air-titre').textContent = r.titre || '—';
-  document.getElementById('on-air-artiste').textContent = r.artistes || '—';
-
-  const cover = document.getElementById('on-air-cover');
-  if (r.cover_deezer) cover.style.backgroundImage = "url('" + r.cover_deezer + "')";
-  else cover.style.backgroundImage = '';
-
-  const extrait = document.getElementById('on-air-extrait');
-  if (r.preview_mp3 && !vieux) {
-    extrait.href = r.preview_mp3;
-    extrait.style.display = 'inline-flex';
+  if (estVieux) {
+    bloc.classList.add('stale');
+    label.textContent = 'Dernier morceau connu';
+    countdownLabelEl.textContent = 'Il y a';
   } else {
-    extrait.style.display = 'none';
+    bloc.classList.remove('stale');
+    label.textContent = 'Morceau en cours';
+    countdownLabelEl.textContent = 'Depuis diffusion';
+  }
+
+  titreEl.textContent = r.titre || '—';
+  artisteEl.textContent = r.artistes || '—';
+
+  if (r.cover_deezer) coverEl.style.backgroundImage = "url('" + r.cover_deezer + "')";
+  else coverEl.style.backgroundImage = '';
+
+  if (r.preview_mp3 && !estVieux) {
+    extraitEl.href = r.preview_mp3;
+    extraitEl.style.display = 'inline-flex';
+  } else {
+    extraitEl.style.display = 'none';
   }
   majCompteur();
 }
 
 function majCompteur() {
   const el = document.getElementById('countdown');
-  if (!el || !DERNIER_TS) return;
-  const sec = Math.floor(Date.now() / 1000) - DERNIER_TS;
-  if (sec > SEUIL_VIEUX) { el.textContent = '--:--'; return; }
-  if (DERNIER_DUREE > 0 && sec >= DERNIER_DUREE) {
-    el.textContent = formatDuree(DERNIER_DUREE); return;
+  if (!el) return;
+  if (!DERNIER_MORCEAU_TS) { el.textContent = '--:--'; return; }
+  const sec = Math.floor(Date.now() / 1000) - DERNIER_MORCEAU_TS;
+  if (sec > SEUIL_VIEUX_MORCEAU) { el.textContent = '--:--'; return; }
+  if (DERNIER_MORCEAU_DUREE > 0 && sec >= DERNIER_MORCEAU_DUREE) {
+    el.textContent = formatDuree(DERNIER_MORCEAU_DUREE); return;
   }
   el.textContent = formatDuree(sec);
 }
@@ -676,15 +756,385 @@ function toggleFlux() {
 }
 
 // ============================================================
-// AUTO-REFRESH
+// MODALE
 // ============================================================
-function demarrerAuto() {
-  if (INTERVALLE_AUTO) clearInterval(INTERVALLE_AUTO);
-  INTERVALLE_AUTO = setInterval(charger, AUTO_REFRESH);
+function ouvrirModaleArtiste(artiste) {
+  const morceaux = ARTISTES_INDEX[artiste] || [];
+  document.getElementById('modale-titre').textContent = artiste;
+  const corps = document.getElementById('modale-corps');
+  if (!morceaux.length) {
+    corps.innerHTML = '<div class="vide">Aucun morceau enregistré</div>';
+  } else {
+    corps.innerHTML = morceaux.map(function(m) {
+      const bg = m.cover_deezer ? "background-image:url('" + m.cover_deezer + "')" : '';
+      return '<div class="artiste-morceau">' +
+        '<div class="pochette" style="' + bg + '"></div>' +
+        '<div class="infos">' +
+        '<div class="titre-m">' + (m.titre || '—') + '</div>' +
+        '<div class="meta-m">' + (m.album || '') + (m.annee ? ' · ' + m.annee : '') + '</div>' +
+        '</div>' +
+        '<div class="heure-m">' + (m.heure != null ? m.heure + 'h' : '') + '</div>' +
+        '</div>';
+    }).join('');
+  }
+  document.getElementById('modale').classList.add('visible');
 }
 
+function fermerModale() {
+  document.getElementById('modale').classList.remove('visible');
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') fermerModale();
+});
+
+// ============================================================
+// CONSTRUCTION
+// ============================================================
+function construire(d) {
+  const vide = '<div class="vide">Pas encore de données</div>';
+
+  // --- Index artistes → morceaux (pour la modale) ---
+  ARTISTES_INDEX = {};
+  if (d.top_artistes) {
+    d.top_artistes.forEach(function(a) {
+      if (a.artistes) ARTISTES_INDEX[a.artistes] = [];
+    });
+  }
+  if (d.derniers_morceaux) {
+    d.derniers_morceaux.forEach(function(m) {
+      if (m.artistes) {
+        if (!ARTISTES_INDEX[m.artistes]) ARTISTES_INDEX[m.artistes] = [];
+        ARTISTES_INDEX[m.artistes].push(m);
+      }
+    });
+  }
+
+  // --- KPIs ---
+  const vol = d.volume || {};
+  const kpis = [
+    ['Diffusions', vol.nb_diffusions || 0],
+    ['Artistes', vol.nb_artistes || 0],
+    ['Titres', vol.nb_titres || 0],
+    ['Heures', Number(vol.heures || 0).toFixed(2)],
+    ['Durée moy.', Number(vol.duree_moy || 0).toFixed(0) + 's']
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(function(k) {
+    return '<div class="kpi"><div class="kpi-label">' + k[0] + '</div><div class="kpi-value">' + k[1] + '</div></div>';
+  }).join('');
+
+  // --- Layouts Plotly ---
+  const layoutBar = {
+    paper_bgcolor: '#ffffff',
+    plot_bgcolor: '#ffffff',
+    font: { color: '#111', size: 11, family: 'Helvetica Neue, Arial' },
+    margin: { l: 180, r: 20, t: 10, b: 40 },
+    xaxis: { gridcolor: '#eee', zerolinecolor: '#ccc', linecolor: '#ccc' },
+    yaxis: { gridcolor: '#eee', zerolinecolor: '#ccc', linecolor: '#ccc', autorange: 'reversed' }
+  };
+  const layoutBase = {
+    paper_bgcolor: '#ffffff',
+    plot_bgcolor: '#ffffff',
+    font: { color: '#111', size: 11, family: 'Helvetica Neue, Arial' },
+    margin: { l: 40, r: 20, t: 10, b: 40 },
+    xaxis: { gridcolor: '#eee', zerolinecolor: '#ccc', linecolor: '#ccc' },
+    yaxis: { gridcolor: '#eee', zerolinecolor: '#ccc', linecolor: '#ccc' }
+  };
+  const layoutDonut = {
+    paper_bgcolor: '#ffffff',
+    plot_bgcolor: '#ffffff',
+    font: { color: '#111', size: 11, family: 'Helvetica Neue, Arial' },
+    margin: { l: 20, r: 20, t: 10, b: 20 },
+    showlegend: true,
+    legend: { orientation: 'v', x: 1, y: 0.5 }
+  };
+  const options = { displayModeBar: false, responsive: true };
+
+  // --- Top artistes ---
+  if (d.top_artistes && d.top_artistes.length) {
+    const top = d.top_artistes.slice(0, 15).reverse();
+    Plotly.newPlot('chart-artistes', [{
+      type: 'bar',
+      orientation: 'h',
+      x: top.map(function(r) { return r.nb_diffusions; }),
+      y: top.map(function(r) { return r.artistes; }),
+      marker: { color: ORANGE },
+      text: top.map(function(r) { return r.nb_diffusions; }),
+      textposition: 'outside',
+      hovertemplate: '%{y}<br>%{x} diffusions<extra></extra>'
+    }], layoutBar, options);
+  } else {
+    document.getElementById('chart-artistes').innerHTML = vide;
+  }
+
+  // --- Top titres ---
+  if (d.top_titres && d.top_titres.length) {
+    const top = d.top_titres.slice(0, 15).reverse();
+    Plotly.newPlot('chart-titres', [{
+      type: 'bar',
+      orientation: 'h',
+      x: top.map(function(r) { return r.nb_diffusions; }),
+      y: top.map(function(r) {
+        const t = (r.titre || '—');
+        return t.length > 30 ? t.slice(0, 28) + '…' : t;
+      }),
+      marker: { color: NOIR },
+      text: top.map(function(r) { return r.nb_diffusions; }),
+      textposition: 'outside',
+      customdata: top.map(function(r) { return r.artistes || ''; }),
+      hovertemplate: '%{y}<br>%{customdata}<br>%{x} diffusions<extra></extra>'
+    }], layoutBar, options);
+  } else {
+    document.getElementById('chart-titres').innerHTML = vide;
+  }
+
+  // --- Par heure ---
+  if (d.heures && d.heures.length) {
+    Plotly.newPlot('chart-heures', [{
+      type: 'bar',
+      x: d.heures.map(function(r) { return (r.heure != null ? r.heure : '?') + 'h'; }),
+      y: d.heures.map(function(r) { return r.nb; }),
+      marker: { color: ORANGE },
+      hovertemplate: '%{x} → %{y} diffusions<extra></extra>'
+    }], layoutBase, options);
+  } else {
+    document.getElementById('chart-heures').innerHTML = vide;
+  }
+
+  // --- Par jour de la semaine ---
+  if (d.semaine && d.semaine.length) {
+    Plotly.newPlot('chart-semaine', [{
+      type: 'bar',
+      x: d.semaine.map(function(r) { return r.jour; }),
+      y: d.semaine.map(function(r) { return r.nb_diffusions; }),
+      marker: { color: NOIR },
+      hovertemplate: '%{x} → %{y} diffusions<extra></extra>'
+    }], layoutBase, options);
+  } else {
+    document.getElementById('chart-semaine').innerHTML = vide;
+  }
+
+  // --- Évolution journalière ---
+  if (d.jours && d.jours.length) {
+    Plotly.newPlot('chart-jours', [{
+      type: 'scatter',
+      mode: 'lines+markers',
+      x: d.jours.map(function(r) { return r.date; }),
+      y: d.jours.map(function(r) { return r.nb; }),
+      line: { color: ORANGE, width: 3 },
+      marker: { size: 10, color: ORANGE },
+      fill: 'tozeroy',
+      fillcolor: 'rgba(255, 122, 0, 0.1)',
+      hovertemplate: '%{x}<br>%{y} diffusions<extra></extra>'
+    }], {
+      paper_bgcolor: '#fff',
+      plot_bgcolor: '#fff',
+      font: { color: '#111', size: 11 },
+      margin: { l: 40, r: 20, t: 10, b: 60 },
+      xaxis: { gridcolor: '#eee', zerolinecolor: '#ccc', linecolor: '#ccc' },
+      yaxis: { gridcolor: '#eee', zerolinecolor: '#ccc', linecolor: '#ccc' }
+    }, options);
+  } else {
+    document.getElementById('chart-jours').innerHTML = vide;
+  }
+
+  // --- Par année ---
+  if (d.annees && d.annees.length) {
+    const tri = d.annees.slice().sort(function(a, b) {
+      return (a.annee || 0) - (b.annee || 0);
+    });
+    Plotly.newPlot('chart-annees', [{
+      type: 'bar',
+      x: tri.map(function(r) { return r.annee; }),
+      y: tri.map(function(r) { return r.nb_diffusions; }),
+      marker: { color: ORANGE },
+      hovertemplate: '%{x} → %{y} diffusions<extra></extra>'
+    }], {
+      paper_bgcolor: '#fff',
+      plot_bgcolor: '#fff',
+      font: { color: '#111', size: 11 },
+      margin: { l: 40, r: 20, t: 10, b: 40 },
+      xaxis: { gridcolor: '#eee', zerolinecolor: '#ccc', linecolor: '#ccc', type: 'category' },
+      yaxis: { gridcolor: '#eee', zerolinecolor: '#ccc', linecolor: '#ccc' }
+    }, options);
+  } else {
+    document.getElementById('chart-annees').innerHTML = vide;
+  }
+
+  // --- Explicit vs Clean ---
+  if (d.explicit && d.explicit.length) {
+    const labels = d.explicit.map(function(r) { return r.type_contenu || '—'; });
+    const vals   = d.explicit.map(function(r) { return Number(r.nb) || 0; });
+    const pcts   = d.explicit.map(function(r) { return Number(r.pct) || 0; });
+    const couleurs = labels.map(function(l) {
+      return /explicit/i.test(l) ? ORANGE : NOIR;
+    });
+
+    Plotly.newPlot('chart-explicit', [{
+      type: 'pie',
+      hole: 0.55,
+      labels: labels,
+      values: vals,
+      marker: { colors: couleurs },
+      text: pcts.map(function(p) { return p.toFixed(1) + '%'; }),
+      textinfo: 'label+percent',
+      hovertemplate: '%{label}<br>%{value} diffusions (%{text})<extra></extra>'
+    }], layoutDonut, options);
+  } else {
+    document.getElementById('chart-explicit').innerHTML = vide;
+  }
+
+  // --- Top albums ---
+  if (d.albums && d.albums.length) {
+    document.getElementById('table-albums').innerHTML = construireTableau(
+      d.albums.slice(0, 10),
+      ['album', 'artistes', 'nb'],
+      ['Album', 'Artiste', 'Diff.']
+    );
+  } else {
+    document.getElementById('table-albums').innerHTML = vide;
+  }
+
+  // --- Artistes récurrents (cliquables) ---
+  if (d.recurrents && d.recurrents.length) {
+    const html = '<table><thead><tr><th>#</th><th>Artiste</th><th>Jours</th><th>Diff.</th></tr></thead><tbody>' +
+      d.recurrents.slice(0, 10).map(function(r, i) {
+        return '<tr onclick="ouvrirModaleArtiste(\'' + echapper(r.artistes) + '\')">' +
+          '<td><span class="rang' + rangClass(i) + '">' + (i + 1) + '</span></td>' +
+          '<td>' + (r.artistes || '—') + '</td>' +
+          '<td>' + (r.nb_jours || 0) + '</td>' +
+          '<td>' + (r.nb_diffusions || 0) + '</td>' +
+          '</tr>';
+      }).join('') + '</tbody></table>';
+    document.getElementById('table-recurrents').innerHTML = html;
+  } else {
+    document.getElementById('table-recurrents').innerHTML = vide;
+  }
+
+  // --- Titres récurrents ---
+  if (d.titres_recurrents && d.titres_recurrents.length) {
+    const html = '<table><thead><tr><th>#</th><th>Titre</th><th>Artiste</th><th>Jours</th></tr></thead><tbody>' +
+      d.titres_recurrents.slice(0, 10).map(function(r, i) {
+        return '<tr>' +
+          '<td><span class="rang' + rangClass(i) + '">' + (i + 1) + '</span></td>' +
+          '<td>' + (r.titre || '—') + '</td>' +
+          '<td>' + (r.artistes || '—') + '</td>' +
+          '<td>' + (r.nb_jours || 0) + '</td>' +
+          '</tr>';
+      }).join('') + '</tbody></table>';
+    document.getElementById('table-titres-rec').innerHTML = html;
+  } else {
+    document.getElementById('table-titres-rec').innerHTML = vide;
+  }
+
+  // --- Artistes diversifiés ---
+  if (d.diversifies && d.diversifies.length) {
+    const html = '<table><thead><tr>' +
+      '<th>#</th><th>Artiste</th><th>Titres</th><th>Diff.</th>' +
+      '</tr></thead><tbody>' +
+      d.diversifies.slice(0, 10).map(function(r, i) {
+        return '<tr>' +
+          '<td><span class="rang' + rangClass(i) + '">' + (i + 1) + '</span></td>' +
+          '<td>' + (r.artistes || '—') + '</td>' +
+          '<td>' + (r.nb_titres || 0) + '</td>' +
+          '<td>' + (r.nb_diffusions || 0) + '</td>' +
+          '</tr>';
+      }).join('') +
+      '</tbody></table>';
+    document.getElementById('table-diversif').innerHTML = html;
+  } else {
+    document.getElementById('table-diversif').innerHTML = vide;
+  }
+
+  // --- Émissions (hardcodées selon jour de semaine) ---
+  const now = new Date();
+  const estWeekend = now.getDay() === 0 || now.getDay() === 6;
+  const emissions = estWeekend ? EMISSIONS_WEEKEND : EMISSIONS_SEMAINE;
+  document.getElementById('table-emissions').innerHTML =
+    emissions.map(function(e) {
+      return '<div class="emission">' +
+        '<div class="horaire">' + e.horaire + '</div>' +
+        '<div class="nom"><strong>' + e.nom + '</strong>' +
+        '<span>avec ' + e.animateur + '</span></div>' +
+        '</div>';
+    }).join('');
+
+  // --- Derniers morceaux ---
+  const derniers = (d.derniers_morceaux || []).slice(0, 20);
+  if (derniers.length) {
+    let html = '<table><thead><tr><th></th><th>Heure</th><th>Artiste</th><th>Titre</th><th>Album</th></tr></thead><tbody>';
+    for (const m of derniers) {
+      const heure = m.heure != null ? String(m.heure).padStart(2, '0') + 'h' : '—';
+      const pochette = m.cover_deezer
+        ? '<span class="pochette-cell" style="background-image:url(\'' + m.cover_deezer + '\')"></span>'
+        : '<span class="pochette-cell"></span>';
+      const badge = m.explicit ? '<span class="explicit-badge">EXPLICIT</span>' : '';
+      html += '<tr><td style="width:50px">' + pochette + '</td>' +
+        '<td>' + heure + '</td>' +
+        '<td>' + (m.artistes || '—') + badge + '</td>' +
+        '<td>' + (m.titre || '—') + '</td>' +
+        '<td>' + (m.album || '—') + '</td></tr>';
+    }
+    html += '</tbody></table>';
+    document.getElementById('table-derniers').innerHTML = html;
+  } else {
+    document.getElementById('table-derniers').innerHTML = vide;
+  }
+}
+
+// ============================================================
+// UTILITAIRES
+// ============================================================
+function construireTableau(rows, cles, entetes) {
+  if (!rows || !rows.length) return '<div class="vide">Pas encore de données</div>';
+  let html = '<table><thead><tr>';
+  entetes.forEach(function(h) { html += '<th>' + h + '</th>'; });
+  html += '</tr></thead><tbody>';
+  rows.forEach(function(r, i) {
+    html += '<tr>';
+    cles.forEach(function(c, j) {
+      let val = r[c];
+      if (val == null || val === '') val = '—';
+      if (j === 0) {
+        html += '<td><span class="rang' + rangClass(i) + '">' + (i + 1) + '</span>' + val + '</td>';
+      } else {
+        html += '<td>' + val + '</td>';
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  return html;
+}
+
+function rangClass(i) {
+  if (i === 0) return ' top1';
+  if (i === 1) return ' top2';
+  if (i === 2) return ' top3';
+  return '';
+}
+
+function echapper(str) {
+  return String(str || '')
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// ============================================================
+// AUTO-REFRESH
+// ============================================================
+function demarrerAutoRefresh() {
+  if (INTERVALLE_AUTO) clearInterval(INTERVALLE_AUTO);
+  INTERVALLE_AUTO = setInterval(charger, AUTO_REFRESH_MS);
+}
+
+// ============================================================
+// DÉMARRAGE
+// ============================================================
 charger();
-demarrerAuto();
+demarrerAutoRefresh();
 </script>
 </body>
 </html>
